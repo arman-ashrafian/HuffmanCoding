@@ -8,8 +8,8 @@
 # compress() 		- Returns the path of the compressed file (.bin format)
 #
 # decompress(path) 	- Requires path of file to be decompressed. Must be called
-#					  from same object that called compressed because the code
-#					  mapping is a data member of the object.  
+#                     from same object that called compressed because the code
+#                     mapping is a data member of the object.  
 
 import os
 import heapq
