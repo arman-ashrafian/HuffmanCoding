@@ -3,7 +3,9 @@
 
 # This file implements everything needed for Lossless Huffman Coding.
 # HuffmanCoding takes the full path of file to be compressed and builds
-# the neccessary codes for encoding.
+# the neccessary codes for encoding/decoding. The compressed and 
+# decompressed files will be saved in the same directory as the 
+# initial file. I have only tested this on .txt files. 
 
 # compress()        - Returns the path of the compressed file (.bin format)
 #
