@@ -7,5 +7,7 @@ def main():
 
 	output_path = h.compress()
 
+	h.decompress(output_path)
+
 if __name__ == '__main__':
 	main()

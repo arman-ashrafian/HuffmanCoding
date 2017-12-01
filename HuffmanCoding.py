@@ -33,6 +33,12 @@ class Node:
 			return -1
 		else:
 			return self.freq >= other.freq
+	# justincase
+	# def __eq__(self, other):
+	# 	if other == None or not isinstance(other, Node):
+	# 		return -1 
+	# 	else:
+	# 		return self.freq == other.freq 
 
 class HuffmanCoding:
 	def __init__(self, path):
@@ -81,6 +87,8 @@ class HuffmanCoding:
 		root = heapq.heappop(self.heap)
 		currentCode = ""
 		self.recur_make_codes(root, currentCode)
+
+	''' COMPRESSION '''
 
 	def get_encoded_text(self, text):
 		encoded_text = ""
@@ -133,6 +141,58 @@ class HuffmanCoding:
 
 		print("Compressed File")
 		return outputPath
+
+	''' DECOMPRESSION '''
+
+	def remove_padding(self, paddedEncodedText):
+		# get padding
+		paddingInfo = paddedEncodedText[0:8]
+		padding = int(paddingInfo, 2)
+
+		# remove padding info
+		paddedEncodedText = paddedEncodedText[8:]
+		# remove padding
+		encodedText = paddedEncodedText[:-1*padding]
+
+		return encodedText
+
+	def decode_text(self, encodedText):
+		currentCode = ""
+		decodedText = ""
+
+		for bit in encodedText:
+			currentCode += bit 
+			if currentCode in self.decodes:
+				decodedText += self.decodes[currentCode]
+				currentCode = ""
+
+		return decodedText
+
+	def decompress(self, path):
+		file, ext = os.path.splitext(path)
+		outputPath = file + "_decompressed" + ".txt"
+
+		with open(path, 'rb') as inFile, open(outputPath, 'w') as outFile:
+			bitString = ""
+
+			byte = inFile.read(1)
+			while(len(byte) > 0):
+				byte = ord(byte)
+				bits = bin(byte)[2:].rjust(8, '0')
+
+				bitString += bits
+
+				byte = inFile.read(1)
+
+			encodedText = self.remove_padding(bitString)
+
+			decompressedText = self.decode_text(encodedText)
+
+			outFile.write(decompressedText)
+
+		print("DECOMPRESSED FILE")
+		return outputPath
+
 
 
 
