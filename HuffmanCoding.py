@@ -48,7 +48,9 @@ class HuffmanCoding:
 
 	def build_priority_queue(self, freq):
 		for key in freq:
-			heapq.heappush(self.heap, Node(key, freq[key]))
+			node = Node(key, freq[key])
+			heapq.heappush(self.heap, node)
+
 
 	def merge_nodes(self):
 		while(len(self.heap) > 1):
@@ -96,9 +98,36 @@ class HuffmanCoding:
 		encodedText = paddedInfo + encodedText
 
 	def get_byte_array(self, paddedText):
+		assert len(paddedText) % 8 == 0, "NEED PADDING"
+
 		b = bytearray()
 		for i in range(0, len(paddedText), 8):
 			byte = paddedText[i:i+8]
 			b.append(int(byte, 2))
 		return b
+
+	def compress(self):
+		file, exten = os.path.splitext(self.path)
+		outputPath = file + ".bin"
+
+		with open(self.path, 'r+') as inFile, open(outputPath, 'wb') as outFile:
+			# get input text and remove whitespace at beginning/end
+			text = inFile.read().rstrip()
+
+			freq = self.build_frequency_dict(text)
+			self.build_priority_queue(freq)
+			self.merge_nodes()
+			self.make_codes()
+
+			encoded = self.get_encoded_text(text)
+			padded = self.add_padding(encoded)
+
+			b = self.get_byte_array(padded)
+			outFile.write(bytes(b))
+
+		print("Compressed File")
+		return outputPath
+
+
+
 
