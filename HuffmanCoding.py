@@ -25,11 +25,12 @@ class Node:
 		self.right = None
 
 	# compare nodes by frequency
-	def __cmp__(self, other):
+	# min heap requires > operator 
+	def __gt__(self, other):
 		if other == None or not isinstance(other, Node):
 			return -1
 		else:
-			return self.freq > other.freq
+			return self.freq >= other.freq
 
 class HuffmanCoding:
 	def __init__(self, path):
@@ -57,11 +58,11 @@ class HuffmanCoding:
 			node1 = heapq.heappop(self.heap)
 			node2 = heapq.heappop(self.heap)
 
-			merged_node = Node(None, node1.freq + node2.freq)
+			merged = Node(None, node1.freq + node2.freq)
 			merged.left = node1 
 			merged.right = node2 
 
-			heapq.heappush(self.heap, merged_node)
+			heapq.heappush(self.heap, merged)
 
 	def recur_make_codes(self, node, currentCode):
 		if node == None: return 
@@ -93,9 +94,12 @@ class HuffmanCoding:
 		padding = 8 - (len(encodedText) % 8)
 		for i in range(padding):
 			encodedText += "0"
+
 		# convets padding to 8 bit binary
 		paddedInfo = "{0:08b}".format(padding)   
 		encodedText = paddedInfo + encodedText
+		return encodedText
+
 
 	def get_byte_array(self, paddedText):
 		assert len(paddedText) % 8 == 0, "NEED PADDING"

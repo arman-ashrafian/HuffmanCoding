@@ -1,4 +1,4 @@
-from huffmancoding import *
+from huffmancoding import HuffmanCoding
 
 def main():
 	path = "C:\\Users\\arman\\Desktop\\HuffmanCoding\\text\\sample1.txt"
@@ -6,9 +6,6 @@ def main():
 	h = HuffmanCoding(path)
 
 	output_path = h.compress()
-
-	print(output_path)
-
 
 if __name__ == '__main__':
 	main()
