@@ -15,6 +15,7 @@
 
 import os
 import heapq
+import copy
 
 # Huffman Tree Node
 class Node:
@@ -33,12 +34,6 @@ class Node:
 			return -1
 		else:
 			return self.freq >= other.freq
-	# justincase
-	# def __eq__(self, other):
-	# 	if other == None or not isinstance(other, Node):
-	# 		return -1 
-	# 	else:
-	# 		return self.freq == other.freq 
 
 class HuffmanCoding:
 	def __init__(self, path):
@@ -46,6 +41,7 @@ class HuffmanCoding:
 		self.heap = []
 		self.encodes = {}
 		self.decodes = {}
+		self.og_heap = []
 
 	def build_frequency_dict(self, text):
 		freq = {}
@@ -128,8 +124,12 @@ class HuffmanCoding:
 			# get input text and remove whitespace at beginning/end
 			text = inFile.read().rstrip()
 
-			freq = self.build_frequency_dict(text)
-			self.build_priority_queue(freq)
+			self.freq = self.build_frequency_dict(text)
+			self.build_priority_queue(self.freq)
+
+			# Save heap for later output
+			self.og_heap = copy.deepcopy(self.heap)
+
 			self.merge_nodes()
 			self.make_codes()
 
@@ -192,6 +192,8 @@ class HuffmanCoding:
 
 		print("DECOMPRESSED FILE")
 		return outputPath
+
+
 
 
 
