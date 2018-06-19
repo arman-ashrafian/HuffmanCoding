@@ -1,24 +1,26 @@
 # Arman Ashrafian
-# 11-30-2017
 
 # This file tests the huffman compression of the Gettysburg Address.
 # Compresses the file from 1473 bytes to 773 bytes.
 #
 # Compression Ratio: 1.91
 
-from huffmancoding import HuffmanCoding
+from HuffmanCoding import HuffmanCoding
 import os
 
 def main():
-	OUTPUT_FREQ_TABLE = False
+	OUTPUT_FREQ_TABLE = True
 
-	path = "C:\\Users\\arman\\Desktop\\HuffmanCoding\\text\\gettysburg.txt"
-	path2 = "C:\\Users\\arman\\Desktop\\HuffmanCoding\\text\\gettysburg.bin"
+	gettysburg_txt_path = os.getcwd() + '\\text\\gettysburg.txt' # original text
+	gettysburg_bin_path = os.getcwd() + '\\text\\gettysburg.bin' # compressed text
 
-	h = HuffmanCoding(path)
+	# create huffman object
+	h = HuffmanCoding(gettysburg_txt_path)
 
+	# compress gettysburg text and store the path to the compressed file in output_path
 	output_path = h.compress()
 
+	# decompress the compressed gettysburg file
 	h.decompress(output_path)
 
 	# print out frquency table and huffman codes for each letter
@@ -28,12 +30,9 @@ def main():
 			print('%s - %s' % (node.char, node.freq))
 
 	# print out the compression ratio
-	og_size = os.stat(path).st_size
-	de_size = os.stat(path2).st_size
-
+	og_size = os.stat(gettysburg_txt_path).st_size
+	de_size = os.stat(gettysburg_bin_path).st_size
 	print('\nCompression Ratio: %.4f' % (og_size/de_size))
-
-
 
 if __name__ == '__main__':
 	main()
